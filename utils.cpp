@@ -24,4 +24,4 @@ inline T binpow(T a, T b, T &MOD) {
 
 // TODO fast GCD using Lehmer's algorithm
 
-};
+};  // namespace MyFunctions

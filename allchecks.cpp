@@ -8,7 +8,7 @@
 
 // TODO just casual speed up for basic functions.
 
-namespace {
+namespace Checks {
 
 bool mersenne_trial_factoring(int p) {
     // factoring_cost < chance_of_finding_factor * primality_test_cost
@@ -171,4 +171,4 @@ bool PollardsFactorization(int p) {
 
 // TODO AKS and Elliptic curves
 
-};  // namespace
+};  // namespace Checks

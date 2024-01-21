@@ -10,4 +10,4 @@ void test_section_Miller_Rabin();
 
 void run_all_tests();
 
-};
+};  // namespace Tests
