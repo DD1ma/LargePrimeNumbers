@@ -17,6 +17,7 @@ int chooseD(T num) {
         }
         D *= -1;
         cnt++;
+        // prevent infinite loop if n is square
         if (cnt == 5) {
             auto x = MyFunctions::GetSqrt(num);
             if (num == x * x) {
@@ -28,30 +29,33 @@ int chooseD(T num) {
 }
 
 template <class T>
-struct LucasSequencesValues {
-    T U;
-    T V;
-    T Q;
-};
-
-// Да, я знаю что std::pair надо убрать)
-template <class T>
-LucasSequencesValues<T> getAstarUVQ(int D) {
-    LucasSequencesValues<T> UVQ;
-    if (D == 5) {
-        UVQ.U = 1;
-        UVQ.V = 5;  // P
-        UVQ.Q = 5;
-    } else {
-        UVQ.U = 1;
-        UVQ.V = 1;  // P
-        UVQ.Q = (1 - D) / 4;
-    }
-    return UVQ;
+LucasSequencesValues<T> get_method_A_values(T n) {
+    LucasSequencesValues<T> starting_values;
+    starting_values.D = chooseD<T>(n);
+    starting_values.U = 1;
+    starting_values.V = 1;  // P
+    starting_values.Q = (1 - D) / 4;
+    return starting_values;
 }
 
 template <class T>
-LucasSequencesValues<T> LucasAStarTest(T &n, int D, LucasSequencesValues<T> initial_UVQ, T &MOD) {
+LucasSequencesValues<T> get_method_A_star_values(T n) {
+    LucasSequencesValues<T> starting_values;
+    starting_values.D = chooseD<T>(n);
+    if (D == 5) {
+        starting_values.U = 1;
+        starting_values.V = 5;  // P
+        starting_values.Q = 5;
+    } else {
+        starting_values.U = 1;
+        starting_values.V = 1;  // P
+        starting_values.Q = (1 - D) / 4;
+    }
+    return starting_values;
+}
+
+template <class T>
+LucasSequencesValues<T> LucasAStarTest(T &n, LucasSequencesValues<T> initial_UVQ, T &MOD) {
     // we want to find U_(n + 1) % n
     if (n == 1) {
         return initial_UVQ;
@@ -93,13 +97,13 @@ bool BailliePSWTest(T num) {
         return false;
     }
     // 3. find D
-    int D = chooseD<T>(num);
-    if (D == 0) {  // num is square
+    LucasSequencesValues<T> UVQ;
+    UVQ = get_method_A_star_values(num);
+    if (UVQ.D == 0) {
         return false;
     }
     // 4. Lucas Strong test
-    LucasSequencesValues<T> UVQ = getAstarUV(D);
-    LucasSequencesValues<T> final_UVQ = LucasAStarTest<T>(num + 1, D, UVQ, num);
+    LucasSequencesValues<T> final_UVQ = LucasAStarTest<T>(num + 1, UVQ, num);
     if (final_UVQ.U != 0) {
         return false;
     }

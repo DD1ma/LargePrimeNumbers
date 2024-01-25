@@ -7,14 +7,18 @@ int chooseD(T num);
 
 template <class T>
 struct LucasSequencesValues {
+    int D;
     T U, V, Q;
 };
 
 template <class T>
-LucasSequencesValues<T> getAstarUVQ(int D);
+LucasSequencesValues<T> get_method_A_values(T n);
 
 template <class T>
-LucasSequencesValues<T> LucasAStarTest(T &n, int D, LucasSequencesValues<T> initial_UVQ, T &MOD);
+LucasSequencesValues<T> get_method_A_star_values(T n);
+
+template <class T>
+LucasSequencesValues<T> LucasAStarTest(T &n, LucasSequencesValues<T> initial_UVQ, T &MOD);
 
 template <class T>
 bool BailliePSWTest(T num);
