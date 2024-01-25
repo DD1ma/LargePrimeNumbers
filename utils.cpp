@@ -21,7 +21,7 @@ inline T binpow(T &a, T &b, T &MOD) {
 }
 
 template <class T>
-int JacobiSymbol(T &a, T &n) {
+int JacobiSymbol(T a, T n) {
     assert(a > 0 && n % 2 == 1);  // invalid value encountered in Jacobi
     a %= n;
     int t = 1;
@@ -59,7 +59,7 @@ bool GetSqrt(T &number) {
 // And check its speed with %
 
 template <class T>
-inline T Gcd(T &a, T &b) {
+inline T Gcd(T a, T b) {
     while (b > 0) {
         T q = a / b;
         T r = a - b * q;
@@ -69,34 +69,43 @@ inline T Gcd(T &a, T &b) {
     return a;
 }
 
-// TODO fast GCD using Lehmer's algorithm
+template <class T>
+T get_high_order_digit(T n, T &base, int &len) {
+    while (n >= base) {
+        n /= base;
+        len++;
+    }
+    return n;
+}
 
 // https://www.imsc.res.in/~kapil/crypto/notes/node11.html
 template <class T>
-T LehmerGCD(T &x, T &y, T &base) {
+T LehmerGCD(T x, T y, T &base) {
     if (x < y) {
         std::swap(x, y);
     }
     T temp;
     while (y >= base) {
-        T x1, y1; // TODO base high-order digit of x, y
+        int xlen = 0, ylen = 0;
+        T x1 = get_high_order_digit(x, base, xlen);
+        T y1 = get_high_order_digit(y, base, ylen);
         T a = 1, b = 0, c = 0, d = 1;
-        while (y1 + c != 0 && y1 + d != 0) {
-            T q = (x + a) / (y + c);
-            T q1 = (x + b) / (y + d);
-            if (q != q1) {
-                break;
+        if (xlen == ylen) {
+            while (y1 + c != 0 && y1 + d != 0) {
+                T q = (x + a) / (y + c);
+                T q1 = (x + b) / (y + d);
+                if (q != q1) {
+                    break;
+                }
+                temp = a; a = c; c = temp - q * c;
+                temp = b; b = d; d = b - q * d;
+                temp = x1; x1 = y1; y1 = x1 - q * y1;
             }
-            temp = a; a = c; c = temp - q * c;
-            temp = b; b = d; d = b - q * d;
-            temp = x1; x1 = y1; y1 = x1 - q * y1; 
         }
         if (b == 0) {
             temp = x; x = y; y = temp % y;
         } else {
-            temp = x; 
-            x = a * x + b * y;
-            y = c * temp + d * y; 
+            temp = x; x = a * x + b * y; y = c * temp + d * y;
         }
     }
     return Gcd(x, y);
