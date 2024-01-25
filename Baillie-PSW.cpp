@@ -5,7 +5,7 @@
 namespace BPSW {
 
 template <class T>
-int chooseD(T num) {
+int chooseD(T &num) {
     int D = 5;
     int cnt = 0;
     // on average takes about 3.1477 checks
@@ -29,7 +29,7 @@ int chooseD(T num) {
 }
 
 template <class T>
-LucasSequencesValues<T> get_method_A_values(T n) {
+LucasSequencesValues<T> get_method_A_values(T &n) {
     LucasSequencesValues<T> starting_values;
     starting_values.D = chooseD<T>(n);
     starting_values.U = 1;
@@ -39,7 +39,7 @@ LucasSequencesValues<T> get_method_A_values(T n) {
 }
 
 template <class T>
-LucasSequencesValues<T> get_method_A_star_values(T n) {
+LucasSequencesValues<T> get_method_A_star_values(T &n) {
     LucasSequencesValues<T> starting_values;
     starting_values.D = chooseD<T>(n);
     if (D == 5) {
@@ -55,7 +55,7 @@ LucasSequencesValues<T> get_method_A_star_values(T n) {
 }
 
 template <class T>
-LucasSequencesValues<T> LucasAStarTest(T &n, LucasSequencesValues<T> initial_UVQ, T &MOD) {
+LucasSequencesValues<T> LucasAStarTest(T &n, LucasSequencesValues<T> &initial_UVQ, T &MOD) {
     // we want to find U_(n + 1) % n
     if (n == 1) {
         return initial_UVQ;
@@ -84,7 +84,7 @@ LucasSequencesValues<T> LucasAStarTest(T &n, LucasSequencesValues<T> initial_UVQ
 }
 
 template <class T>
-bool BailliePSWTest(T num) {
+bool BailliePSWTest(T &num) {
     // 1. Trial factoring
     const std::vector<int> primes = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 43};
     for (auto prime : primes) {
