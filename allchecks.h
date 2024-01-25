@@ -1,21 +1,22 @@
 #pragma once
 
-#include <boost/multiprecision/gmp.hpp>
-
 namespace Checks {
-
-typename boost::multiprecision::mpz_int mpz_int;
 
 bool mersenne_trial_factoring(int p);
 
+template <class T>
 inline bool check_mersenne(int p);
 
+template <class T>
 inline bool PRP_LL(int p);
 
-bool MillerRabbin(mpz_int p, int tests);
+template <class T>
+bool MillerRabbin(T &p, int tests);
 
-inline bool FermatPrimalityTest(mpz_int p);
+template <class T>
+inline bool FermatPrimalityTest(T &p);
 
+template <class T>
 bool PollardsFactorization(int p);
 
 };  // namespace Checks
